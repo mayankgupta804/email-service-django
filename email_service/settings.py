@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
 
 # Application definition
 

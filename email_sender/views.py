@@ -9,7 +9,8 @@ import os
 
 from .forms import EmailForm
 from .models import Email, CSVDocument
-from .helpers import save_emails, read_csv
+from .helpers import save_emails, read_csv, get_correct_email_ids
+from .mail import send_mail
 
 def index(request):
     if request.method == "POST":
@@ -42,6 +43,9 @@ def index(request):
             if len(incorrect_email_id_list) > 0:
                 messages.error(request, "Emails could not be sent to these ids as these ids are incorrect: ")
                 messages.error(request, [email for email in incorrect_email_id_list])
+            correct_email_ids = get_correct_email_ids(total_email_id_list, incorrect_email_id_list)
+            print(correct_email_ids)
+            send_mail.delay(correct_email_ids)
             messages.success(request, 'Email(s) sent!')
             return HttpResponseRedirect(reverse('index'))
     elif request.method == "GET":    
