@@ -5,21 +5,27 @@ from django.utils import timezone
 from .models import Email
 
 def save_emails(email_id_list, cc_list, bcc_list, subject, body):
+
     for email_id in email_id_list:
-        print(email_id)
-        error = save_data(email_id, subject, body)
-        if error is not None:
-            return error
+        email_id = email_id.strip()
+        if len(email_id) > 0:
+            error = save_data(email_id, subject, body)
+            if error is not None:
+                return error
 
     for cc in cc_list:
-        error = save_data(cc, subject, body)
-        if error is not None:
-            return error
+        cc = cc.strip()
+        if len(cc) > 0:
+            error = save_data(cc, subject, body)
+            if error is not None:
+                return error
 
     for bcc in bcc_list:
-        error = save_data(bcc, subject, body)
-        if error is not None:
-            return error
+        bcc = bcc.strip()
+        if len(bcc) > 0:
+            error = save_data(bcc, subject, body)
+            if error is not None:
+                return error
 
 def save_data(email_id, subject, body):
     email = Email()
