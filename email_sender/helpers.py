@@ -13,8 +13,9 @@ def save_emails(email_id_list, cc_list, bcc_list, subject, body):
         if len(email_id) > 0:
             cc = False
             bcc = False
-            error_email_id = save_email_data(email_id, subject, body, cc, bcc)
-            if error_email_id:
+            if is_email_id_correct(email_id):
+                save_email_data(email_id, subject, body, cc, bcc)
+            else:
                 incorrect_email_id_list.append(email_id)
 
     for cc_email in cc_list:
@@ -22,8 +23,9 @@ def save_emails(email_id_list, cc_list, bcc_list, subject, body):
         if len(cc_email) > 0:
             cc = True
             bcc = False
-            error_email_id = save_email_data(cc_email, subject, body, cc, bcc)
-            if error_email_id:
+            if is_email_id_correct(cc_email):
+                save_email_data(cc_email, subject, body, cc, bcc)
+            else:
                 incorrect_email_id_list.append(cc_email)
 
     for bcc_email in bcc_list:
@@ -31,21 +33,15 @@ def save_emails(email_id_list, cc_list, bcc_list, subject, body):
         if len(bcc_email) > 0:
             cc = False
             bcc = True
-            error_email_id = save_email_data(bcc_email, subject, body, cc, bcc)
-            if error_email_id:
+            if is_email_id_correct(bcc_email):
+                save_email_data(bcc_email, subject, body, cc, bcc)
+            else:
                 incorrect_email_id_list.append(bcc_email)
 
     return incorrect_email_id_list        
 
 def save_email_data(email_id, subject, body, cc, bcc):
     email = Email()
-    try:
-        validate_email(email_id)
-    except ValidationError as e:
-        print("Exception: {}".format(e))
-        print("Invalid email address: {}".format(email_id))
-        return True
-
     email.email_id = email_id
     email.cc = cc
     email.bcc = bcc
@@ -54,8 +50,16 @@ def save_email_data(email_id, subject, body, cc, bcc):
     email.sent_at = timezone.now()
     email.save()
 
-    return False
+def is_email_id_correct(email_id):
+    try:
+        validate_email(email_id)
+    except ValidationError as e:
+        print("Exception: {}".format(e))
+        print("Invalid email address: {}".format(email_id))
+        return False
+    return True    
 
+# read_csv assumes that each row of a csv file contains only a single email_address
 def read_csv(filename):
     with open(filename, newline='') as csv_file:
         csv_reader = csv.reader(csv_file)
