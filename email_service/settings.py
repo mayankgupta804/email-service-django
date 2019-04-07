@@ -122,13 +122,12 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # SMTP server configuration
-EMAIL_BACKEND='django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' # From env
 EMAIL_PORT = 587 # From env
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = "gogo@gigi.com"
+EMAIL_HOST_PASSWORD = "lalapa"
 EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
