@@ -34,12 +34,16 @@ def index(request):
             bcc_list = bcc.split(",")
             subject = form.cleaned_data['subject']
             body = form.cleaned_data['body']
-            error = save_emails(email_id_list, cc_list, bcc_list, subject, body)
-            if error is not None:
-                messages.error(request, error)
-                return HttpResponseRedirect(reverse('index') )
-            messages.success(request, 'Email sent!')
-            return HttpResponseRedirect(reverse('index') )
+            total_email_id_list = email_id_list + cc_list + bcc_list
+            incorrect_email_id_list = save_emails(email_id_list, cc_list, bcc_list, subject, body)
+            if len(total_email_id_list) == len(incorrect_email_id_list):
+                messages.error(request, "ALL THE EMAIL IDS ARE INCORRECT!")
+                return HttpResponseRedirect(reverse('index'))
+            if len(incorrect_email_id_list) > 0:
+                messages.error(request, "Emails could not be sent to these ids as these ids are incorrect: ")
+                messages.error(request, [email for email in incorrect_email_id_list])
+            messages.success(request, 'Email(s) sent!')
+            return HttpResponseRedirect(reverse('index'))
     elif request.method == "GET":    
         form = EmailForm()
     return render(request, 'email_sender/index.html', {
