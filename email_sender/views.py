@@ -5,12 +5,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.conf import settings
 
-import csv
 import os
 
 from .forms import EmailForm
 from .models import Email, CSVDocument
-from .helpers import save_emails
+from .helpers import save_emails, read_csv
 
 def index(request):
     if request.method == "POST":
@@ -45,15 +44,4 @@ def index(request):
         form = EmailForm()
     return render(request, 'email_sender/index.html', {
             'form': form
-        })
-            
-def read_csv(filename):
-    with open(filename, newline='') as csv_file:
-        csv_reader = csv.reader(csv_file)
-        email_list = []
-        for email in csv_reader:
-            email_list.append(email)
-        new_email_list = []    
-        for i in range(len(email_list)):
-            new_email_list.append(email_list[i][0])
-        return new_email_list        
+        })    

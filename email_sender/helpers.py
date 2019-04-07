@@ -2,6 +2,8 @@ from django.core.validators import validate_email
 from django.core.exceptions import ValidationError
 from django.utils import timezone 
 
+import csv
+
 from .models import Email
 
 def save_emails(email_id_list, cc_list, bcc_list, subject, body):
@@ -9,25 +11,31 @@ def save_emails(email_id_list, cc_list, bcc_list, subject, body):
     for email_id in email_id_list:
         email_id = email_id.strip()
         if len(email_id) > 0:
-            error = save_email_data(email_id, subject, body)
+            cc = False
+            bcc = False
+            error = save_email_data(email_id, subject, body, cc, bcc)
             if error is not None:
                 return error
 
-    for cc in cc_list:
-        cc = cc.strip()
-        if len(cc) > 0:
-            error = save_email_data(cc, subject, body)
+    for cc_email in cc_list:
+        cc_email = cc_email.strip()
+        if len(cc_email) > 0:
+            cc = True
+            bcc = False
+            error = save_email_data(cc_email, subject, body, cc, bcc)
             if error is not None:
                 return error
 
-    for bcc in bcc_list:
-        bcc = bcc.strip()
-        if len(bcc) > 0:
-            error = save_email_data(bcc, subject, body)
+    for bcc_email in bcc_list:
+        bcc_email = bcc_email.strip()
+        if len(bcc_email) > 0:
+            cc = False
+            bcc = True
+            error = save_email_data(bcc_email, subject, body, cc, bcc)
             if error is not None:
                 return error
 
-def save_email_data(email_id, subject, body):
+def save_email_data(email_id, subject, body, cc, bcc):
     email = Email()
     try:
         validate_email(email_id)
@@ -36,9 +44,22 @@ def save_email_data(email_id, subject, body):
         return "Incorrect email id: {}".format(email_id)
 
     email.email_id = email_id
+    email.cc = cc
+    email.bcc = bcc
     email.subject = subject
     email.body = body
     email.sent_at = timezone.now()
     email.save()
 
     return None
+
+def read_csv(filename):
+    with open(filename, newline='') as csv_file:
+        csv_reader = csv.reader(csv_file)
+        email_list = []
+        for email in csv_reader:
+            email_list.append(email)
+        new_email_list = []    
+        for i in range(len(email_list)):
+            new_email_list.append(email_list[i][0])
+        return new_email_list           
