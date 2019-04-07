@@ -7,3 +7,4 @@ class EmailForm(forms.Form):
     subject = forms.CharField(max_length=500, label="Subject")
     body = forms.CharField(label="Body",widget=forms.Textarea(
                         attrs={'placeholder': 'Enter your message here'}))    
+    csv_file = forms.FileField(label='Upload CSV', help_text='*max 100KB', required=False)

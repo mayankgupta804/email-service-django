@@ -2,12 +2,13 @@
 
 {% block content %}
     <h3 class="center-align">{{title}}</h3>
-    <form method="POST" action="/"> {% csrf_token %}
+    <form method="POST" action="/" enctype="multipart/form-data"> {% csrf_token %}
         {{ form.as_p }}
         <div class="wrapper">
-            <button class="btn waves-effect waves-light button" type="submit">Send</button><br>
+            <button class="btn waves-effect waves-light button send" type="submit">Send</button><br>
         </div>
     </form>
+    <br>
     <br>
     {% if messages %}
     <ul class="messages">

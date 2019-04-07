@@ -9,25 +9,25 @@ def save_emails(email_id_list, cc_list, bcc_list, subject, body):
     for email_id in email_id_list:
         email_id = email_id.strip()
         if len(email_id) > 0:
-            error = save_data(email_id, subject, body)
+            error = save_email_data(email_id, subject, body)
             if error is not None:
                 return error
 
     for cc in cc_list:
         cc = cc.strip()
         if len(cc) > 0:
-            error = save_data(cc, subject, body)
+            error = save_email_data(cc, subject, body)
             if error is not None:
                 return error
 
     for bcc in bcc_list:
         bcc = bcc.strip()
         if len(bcc) > 0:
-            error = save_data(bcc, subject, body)
+            error = save_email_data(bcc, subject, body)
             if error is not None:
                 return error
 
-def save_data(email_id, subject, body):
+def save_email_data(email_id, subject, body):
     email = Email()
     try:
         validate_email(email_id)
