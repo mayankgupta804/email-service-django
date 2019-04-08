@@ -70,9 +70,3 @@ def read_csv(filename):
         for i in range(len(email_list)):
             new_email_list.append(email_list[i][0])
         return new_email_list           
-
-def get_correct_email_ids(total_email_id_list, incorrect_email_id_list):
-    total_email_id_set = set(total_email_id_list)
-    incorrect_email_id_set = set(incorrect_email_id_list)
-    correct_email_ids = total_email_id_set - (total_email_id_set.intersection(incorrect_email_id_set))
-    return list(correct_email_ids)
