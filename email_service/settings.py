@@ -142,30 +142,26 @@ EMAIL_USE_TLS = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': True,
-#     'formatters': {
-#         'verbose': {
-#             'format': '%(levelname)s [%(asctime)s] %(module)s %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#             'formatter': 'simple'
-#         },      
-#         'mail_admins': {
-#             'level': 'ERROR',
-#             'class': 'django.utils.log.AdminEmailHandler'
-#         }
-#     },
-#     'loggers': {
-#         'django': {
-#             'handlers': ['console','mail_admins'],
-#             'propagate': True,
-#             'level': 'DEBUG',
-#         },
-#     }
-# }
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "django_mail_admin": {
+        "format": "[%(levelname)s]%(asctime)s PID %(process)d: %(message)s",
+        "datefmt": "%d-%m-%Y %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "django_mail_admin": {
+        "level": "DEBUG",
+        "class": "logging.StreamHandler",
+        "formatter": "django_mail_admin"
+        },
+    },
+    'loggers': {
+        "django_mail_admin": {
+        "handlers": ["django_mail_admin"],
+        "level": "INFO"
+    },
+    },
+}
