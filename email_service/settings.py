@@ -29,6 +29,13 @@ ALLOWED_HOSTS = []
 
 CELERY_BROKER_URL = os.environ.get('CLOUDAMQP_URL')
 
+CELERY_BEAT_SCHEDULE = {
+ 'send-stats-every-half-an-hour': {
+       'task': 'email_sender.tasks.send_stats',
+       'schedule': 1800.0,
+    },       
+}
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -38,7 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'email_sender'
+    'email_sender',
+    'django_celery_beat', 
 ]
 
 MIDDLEWARE = [
@@ -52,6 +60,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'email_service.urls'
+
+ADMINS = ["mayank@mayank.com"]
 
 TEMPLATES = [
     {
@@ -123,11 +133,39 @@ STATIC_URL = '/static/'
 
 # SMTP server configuration
 EMAIL_BACKEND='django.core.mail.backends.console.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com' # From env
-EMAIL_PORT = 587 # From env
-EMAIL_HOST_USER = "gogo@gigi.com"
-EMAIL_HOST_PASSWORD = "lalapa"
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = "gogo@gigi.com" # read from "config" file
+EMAIL_HOST_PASSWORD = "lalapa" # read from "config" file
 EMAIL_USE_TLS = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': True,
+#     'formatters': {
+#         'verbose': {
+#             'format': '%(levelname)s [%(asctime)s] %(module)s %(message)s'
+#         },
+#     },
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#             'formatter': 'simple'
+#         },      
+#         'mail_admins': {
+#             'level': 'ERROR',
+#             'class': 'django.utils.log.AdminEmailHandler'
+#         }
+#     },
+#     'loggers': {
+#         'django': {
+#             'handlers': ['console','mail_admins'],
+#             'propagate': True,
+#             'level': 'DEBUG',
+#         },
+#     }
+# }

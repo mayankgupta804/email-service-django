@@ -10,7 +10,7 @@ import os
 from .forms import EmailForm
 from .models import Email, CSVDocument
 from .helpers import save_emails, read_csv
-from .mail import send_email
+from .tasks import send_email
 
 def index(request):
     if request.method == "POST":

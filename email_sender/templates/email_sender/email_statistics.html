@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Stats</title>
+</head>
+<body>
+    <h1> Email Stats of The Day</h1>
+    <br>
+    <h2>Total Emails Sent: {{ total_emails }}</h2>
+    <br>
+    <h2>Info: </h2>
+    <ul>
+        {% for mail in mails %}
+            <li>Email id: {{ mail.email_id }}</li>
+            <li>Subject: {{ mail.subject }}</li>
+            <li>Cc: {{ mail.cc }}</li>
+            <li>Bcc: {{ mail.bcc }}</li>
+            <li>Sent at: {{ mail.sent_at }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

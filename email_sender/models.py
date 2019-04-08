@@ -8,5 +8,8 @@ class Email(models.Model):
     bcc = models.BooleanField(default=False)
     sent_at = models.DateTimeField()
 
+    def __str__(self):
+        return self.subject 
+
 class CSVDocument(models.Model):
     docfile = models.FileField(upload_to='documents')
