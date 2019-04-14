@@ -1,6 +1,15 @@
+amqp==2.4.2
+billiard==3.6.0.0
+celery==4.3.0
 Django==2.2
+django-celery-beat==1.4.0
+django-multi-email-field==0.5.1
 django-render-block==0.5
-django-templated-email==2.3.0
+django-timezone-field==3.0
+kombu==4.5.0
+python-crontab==2.3.6
+python-dateutil==2.8.0
 pytz==2018.9
 six==1.12.0
 sqlparse==0.3.0
+vine==1.3.0
